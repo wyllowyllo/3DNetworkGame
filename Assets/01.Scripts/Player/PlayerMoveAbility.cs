@@ -12,6 +12,7 @@ public class PlayerMoveAbility : MonoBehaviour
     
     // 참조
     private CharacterController _characterController;
+    private Animator _animator;
     private Camera _cam;
     
     // 상수
@@ -26,6 +27,7 @@ public class PlayerMoveAbility : MonoBehaviour
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _animator =  GetComponent<Animator>();
         _cam = Camera.main;
     }
 
@@ -36,6 +38,7 @@ public class PlayerMoveAbility : MonoBehaviour
         
         Vector3 direction = new Vector3(h, 0, v);
         direction.Normalize();
+        _animator.SetFloat("Speed", direction.magnitude);
         
         // 중력
         _yVeocity -= GRAVITY * Time.deltaTime;
@@ -49,5 +52,7 @@ public class PlayerMoveAbility : MonoBehaviour
        
         direction = _cam.transform.TransformDirection(direction);
         _characterController.Move(direction * _moveSpeed * Time.deltaTime);
+        
+       
     }
 }

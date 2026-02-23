@@ -19,6 +19,7 @@ public class PlayerRotateAbility : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
 
+        
         CinemachineCamera vcam = GameObject.Find("FollowCamera").GetComponent<CinemachineCamera>();
         vcam.Follow = _cameraRoot.transform;
     }

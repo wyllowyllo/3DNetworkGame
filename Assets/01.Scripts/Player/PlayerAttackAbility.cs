@@ -11,9 +11,11 @@ public class PlayerAttackAbility : MonoBehaviour
     }
 
     [SerializeField] private EAttackOption _attackOption;
-    private int _attackIndex = 0;
-    
     private Animator _animator;
+    
+    private float ATTACK_COOLTIME = 0.6f;
+    private float _attackTimer = 0f;
+    private int _attackIndex = 0;
 
     private const int AttackMotionCnt = 3;
     
@@ -24,8 +26,11 @@ public class PlayerAttackAbility : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        _attackTimer += Time.deltaTime;
+        
+        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= ATTACK_COOLTIME)
         {
+            _attackTimer = 0f;
             Attack();
         }
     }

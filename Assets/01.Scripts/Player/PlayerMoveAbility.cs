@@ -15,7 +15,8 @@ public class PlayerMoveAbility : MonoBehaviour
     
     // 상수
     private const float GRAVITY = 9.8f;
-
+    private float _yVeocity = 0f;
+    
     // 프로퍼티
     public float MoveSpeed => _moveSpeed;
     public float JumpForce => _jumpForce;
@@ -28,19 +29,20 @@ public class PlayerMoveAbility : MonoBehaviour
 
     private void Update()
     {
-        float h= Input.GetAxis("Horizontal");
-        float v= Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
         
         Vector3 direction = new Vector3(h, 0, v);
         direction.Normalize();
         
         // 중력
-        direction.y -= GRAVITY * Time.deltaTime;
+        _yVeocity -= GRAVITY * Time.deltaTime;
+        direction.y = _yVeocity;
         
         // 점프
         if (Input.GetKey(KeyCode.Space) && _characterController.isGrounded)
         {
-            direction.y = JumpForce;
+            _yVeocity = JumpForce;
         }
        
         

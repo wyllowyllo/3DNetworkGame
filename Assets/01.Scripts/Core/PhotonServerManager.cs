@@ -17,9 +17,14 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
    
    private void Start()
    {
+      _nickname += $"_{Random.Range(100, 999)}";
+      
       // 시작 시 게임 버전, 닉네임 지정해줘야 함
       PhotonNetwork.GameVersion = _version; // 버전에 따라 유저들이 만날수도,못만날수도 있음(버전에 따른 분기)
       PhotonNetwork.NickName = _nickname;
+      
+      PhotonNetwork.SendRate = 30; // 얼마나 자주 데이터를 송수신할 것인가 (실제 송수신)
+      PhotonNetwork.SerializationRate = 30; // 얼마나 자주 데이터를 직렬화할 것인지 (송수신 준비)
       
       // 방장이 로드한 씬 게임에 다른 유저들도 똑같이 그 씬을 로드하도록 동기화해준다.
       // 방장(마스터 클라이언트) : 방을 만든 '소유자' (방에는 하나의 마스터 클라이언트가 존재)
@@ -74,6 +79,10 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
       {
          Debug.Log($"{player.Value.NickName} : {player.Value.ActorNumber}");
       }
+      
+      // 리소스 폴도에서 "Player" 이름을 가진 프리팹을 생성(인스턴스화)하고, 서버에 등록도 한다
+      // ㄴ 그러나 리소스 폴더는 나쁜것이기에, 다른 방법을 알아보자
+      PhotonNetwork.Instantiate("Player", new Vector3(0, 0, 0), Quaternion.identity);
    }
 
    // 랜덤 방 입장에 실패하면 자동으로 호출되는 콜백 함수

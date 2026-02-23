@@ -12,6 +12,7 @@ public class PlayerMoveAbility : MonoBehaviour
     
     // 참조
     private CharacterController _characterController;
+    private Camera _cam;
     
     // 상수
     private const float GRAVITY = 9.8f;
@@ -25,6 +26,7 @@ public class PlayerMoveAbility : MonoBehaviour
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _cam = Camera.main;
     }
 
     private void Update()
@@ -45,7 +47,7 @@ public class PlayerMoveAbility : MonoBehaviour
             _yVeocity = JumpForce;
         }
        
-        
+        direction = _cam.transform.TransformDirection(direction);
         _characterController.Move(direction * _moveSpeed * Time.deltaTime);
     }
 }

@@ -3491,7 +3491,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRotateAbility
   _cameraRoot: {fileID: 816994649}
-  RotationSpeed: 100
+  _rotationSpeed: 100
 --- !u!1001 &502017115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5152,6 +5152,7 @@ GameObject:
   - component: {fileID: 728288602}
   - component: {fileID: 728288601}
   - component: {fileID: 728288600}
+  - component: {fileID: 728288604}
   - component: {fileID: 728288603}
   m_Layer: 0
   m_Name: CinemachineCamera
@@ -5258,10 +5259,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonAim
   AimCollisionFilter:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   IgnoreTag: 
   AimDistance: 200
   NoiseCancellation: 1
+--- !u!114 &728288604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728288599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4afa82ae3200b82408d605c3dbdd1e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineRotateWithFollowTarget
+  Damping: 0
 --- !u!1001 &749433304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5727,7 +5741,7 @@ Transform:
   m_GameObject: {fileID: 816994648}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.878, z: 0.323}
+  m_LocalPosition: {x: 0, y: 0.927, z: 0.377}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

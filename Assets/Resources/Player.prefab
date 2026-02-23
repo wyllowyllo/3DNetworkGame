@@ -2240,6 +2240,7 @@ GameObject:
   - component: {fileID: 1807256439743626723}
   - component: {fileID: 8183468797005553205}
   - component: {fileID: 7528887694120273982}
+  - component: {fileID: 8657936330996082545}
   - component: {fileID: 3213725271176540747}
   - component: {fileID: 6718135045409253147}
   - component: {fileID: 2402138775131098166}
@@ -2252,7 +2253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1807256439743626723
 Transform:
   m_ObjectHideFlags: 0
@@ -2317,6 +2318,23 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &8657936330996082545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905808016514833383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a8181ae7d4489492a0b4c688dff90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  _stat:
+    MoveSpeed: 7
+    JumpPower: 2.5
+    RotationSpeed: 100
+    AttackSpeed: 0.6
 --- !u!114 &3213725271176540747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2329,8 +2347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc14ee76cdf9fe44a83739cc9965b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveAbility
-  _moveSpeed: 7
-  _jumpForce: 2.5
 --- !u!114 &6718135045409253147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2344,7 +2360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRotateAbility
   _cameraRoot: {fileID: 7339408992507649604}
-  _rotationSpeed: 100
 --- !u!114 &2402138775131098166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2377,9 +2392,9 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 7349917457847723582}
   - {fileID: 4295767472553396920}
-  sceneViewId: 0
+  - {fileID: 7349917457847723582}
+  sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &4295767472553396920

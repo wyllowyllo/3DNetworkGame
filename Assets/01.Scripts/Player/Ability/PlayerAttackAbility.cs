@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class PlayerAttackAbility : MonoBehaviour
+public class PlayerAttackAbility : PlayerAbility
 {
     private enum EAttackOption
     {
@@ -13,14 +13,14 @@ public class PlayerAttackAbility : MonoBehaviour
     [SerializeField] private EAttackOption _attackOption;
     private Animator _animator;
     
-    private float ATTACK_COOLTIME = 0.6f;
     private float _attackTimer = 0f;
     private int _attackIndex = 0;
 
     private const int AttackMotionCnt = 3;
     
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _animator = GetComponent<Animator>();
     }
 
@@ -28,7 +28,7 @@ public class PlayerAttackAbility : MonoBehaviour
     {
         _attackTimer += Time.deltaTime;
         
-        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= ATTACK_COOLTIME)
+        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= (1f / _owner.PlayerStat.AttackSpeed))
         {
             _attackTimer = 0f;
             Attack();

@@ -4,10 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMoveAbility : MonoBehaviour
+public class PlayerMoveAbility : PlayerAbility
 {
-    [SerializeField] private float _moveSpeed = 7f;
-    [SerializeField] private float _jumpForce = 2.5f;
     
     // 참조
     private CharacterController _characterController;
@@ -18,13 +16,10 @@ public class PlayerMoveAbility : MonoBehaviour
     private const float GRAVITY = 9.8f;
     private float _yVeocity = 0f;
     
-    // 프로퍼티
-    public float MoveSpeed => _moveSpeed;
-    public float JumpForce => _jumpForce;
 
-
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _characterController = GetComponent<CharacterController>();
         _animator =  GetComponent<Animator>();
         _cam = Camera.main;
@@ -48,11 +43,11 @@ public class PlayerMoveAbility : MonoBehaviour
         // 점프
         if (Input.GetKey(KeyCode.Space) && _characterController.isGrounded)
         {
-            _yVeocity = JumpForce;
+            _yVeocity = _owner.PlayerStat.JumpPower;
         }
        
       
-        _characterController.Move(direction * _moveSpeed * Time.deltaTime);
+        _characterController.Move(direction * _owner.PlayerStat.MoveSpeed * Time.deltaTime);
         
        
     }

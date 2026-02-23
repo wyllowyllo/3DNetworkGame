@@ -3356,6 +3356,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8210548377922851428, guid: 3f999b6beafe9d249bf9c3a91ff26ff6, type: 3}
   m_PrefabInstance: {fileID: 455792334}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &496282548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7349917457847723582, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+  m_PrefabInstance: {fileID: 8678963516514312584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8189980434934528634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonAnimatorView
+--- !u!114 &496282549 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4295767472553396920, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+  m_PrefabInstance: {fileID: 8678963516514312584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8189980434934528634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
 --- !u!1001 &502017115
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16249,6 +16271,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7339408992507649604, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
   m_PrefabInstance: {fileID: 8678963516514312584}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8189980434934528634 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6905808016514833383, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+  m_PrefabInstance: {fileID: 8678963516514312584}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8678963516514312584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16301,6 +16328,14 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2970721384918541599, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+      propertyPath: 'ObservedComponents.Array.data[0]'
+      value: 
+      objectReference: {fileID: 496282549}
+    - target: {fileID: 2970721384918541599, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+      propertyPath: 'ObservedComponents.Array.data[1]'
+      value: 
+      objectReference: {fileID: 496282548}
     - target: {fileID: 6905808016514833383, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
       propertyPath: m_Name
       value: Player
@@ -16312,8 +16347,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6905808016514833383, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 9036980633515431323}
   m_SourcePrefab: {fileID: 100100000, guid: c99054ff4d583dd4d865ee17f75be533, type: 3}
+--- !u!114 &9036980633515431323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8189980434934528634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56a8181ae7d4489492a0b4c688dff90d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  _stat:
+    MoveSpeed: 7
+    JumpPower: 2.5
+    RotationSpeed: 100
+    AttackSpeed: 0.6
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

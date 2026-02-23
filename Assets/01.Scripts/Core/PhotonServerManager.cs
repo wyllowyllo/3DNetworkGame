@@ -74,11 +74,11 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
       Debug.Log($"플레이어 인원 : {PhotonNetwork.CurrentRoom.PlayerCount}");
       
       // 룸에 입장한 플레이어 정보
-      Dictionary<int, Player> roomPlayers = PhotonNetwork.CurrentRoom.Players;
+      /*Dictionary<int, Player> roomPlayers = PhotonNetwork.CurrentRoom.Players;
       foreach (KeyValuePair<int, Player> player in roomPlayers)
       {
          Debug.Log($"{player.Value.NickName} : {player.Value.ActorNumber}");
-      }
+      }*/
       
       // 리소스 폴도에서 "Player" 이름을 가진 프리팹을 생성(인스턴스화)하고, 서버에 등록도 한다
       // ㄴ 그러나 리소스 폴더는 나쁜것이기에, 다른 방법을 알아보자

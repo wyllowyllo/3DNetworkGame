@@ -3,12 +3,10 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
-public class PlayerRotateAbility : MonoBehaviour
+public class PlayerRotateAbility : PlayerAbility
 {
     [SerializeField] private Transform _cameraRoot;
-    [SerializeField] private float _rotationSpeed = 100f;
-
-
+    
     private Camera _cam;
     
     private float _mx;
@@ -26,6 +24,7 @@ public class PlayerRotateAbility : MonoBehaviour
 
     private void Update()
     {
+        float _rotationSpeed = _owner.PlayerStat.RotationSpeed;
         _mx += Input.GetAxis("Mouse X") * _rotationSpeed * Time.deltaTime;
         _my += Input.GetAxis("Mouse Y") * _rotationSpeed * Time.deltaTime;
         

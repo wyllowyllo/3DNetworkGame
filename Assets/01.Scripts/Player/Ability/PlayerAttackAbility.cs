@@ -1,4 +1,5 @@
 using System;
+using Photon.Pun;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,6 +13,7 @@ public class PlayerAttackAbility : PlayerAbility
 
     [SerializeField] private EAttackOption _attackOption;
     private Animator _animator;
+    private PhotonView _photonView;
     
     private float _attackTimer = 0f;
     private int _attackIndex = 0;
@@ -22,10 +24,13 @@ public class PlayerAttackAbility : PlayerAbility
     {
         base.Awake();
         _animator = GetComponent<Animator>();
+        _photonView = GetComponent<PhotonView>();
     }
 
     private void Update()
     {
+        if (!_photonView.IsMine) return;
+        
         _attackTimer += Time.deltaTime;
         
         if (Input.GetMouseButtonDown(0) &&  _attackTimer >= (1f / _owner.PlayerStat.AttackSpeed))

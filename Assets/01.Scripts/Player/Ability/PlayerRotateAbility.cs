@@ -1,4 +1,5 @@
 using System;
+using Photon.Pun;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
@@ -12,18 +13,25 @@ public class PlayerRotateAbility : PlayerAbility
     private float _mx;
     private float _my;
 
+    private PhotonView _photonView;
     
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-
         
-        CinemachineCamera vcam = GameObject.Find("FollowCamera").GetComponent<CinemachineCamera>();
-        vcam.Follow = _cameraRoot.transform;
+        _photonView = GetComponent<PhotonView>();
+      
+          if (_photonView.IsMine)
+          {
+              CinemachineCamera vCamera = GameObject.FindGameObjectWithTag("FollowCamera").GetComponent<CinemachineCamera>();
+              vCamera.Follow = _cameraRoot;
+          }
     }
 
     private void Update()
     {
+        if (!_photonView.IsMine) return;
+            
         float _rotationSpeed = _owner.PlayerStat.RotationSpeed;
         _mx += Input.GetAxis("Mouse X") * _rotationSpeed * Time.deltaTime;
         _my += Input.GetAxis("Mouse Y") * _rotationSpeed * Time.deltaTime;

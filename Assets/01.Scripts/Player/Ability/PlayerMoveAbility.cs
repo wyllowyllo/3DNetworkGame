@@ -11,6 +11,7 @@ public class PlayerMoveAbility : PlayerAbility
     private CharacterController _characterController;
     private Animator _animator;
     private Camera _cam;
+    private PhotonView _photonView;
     
     // 상수
     private const float GRAVITY = 9.8f;
@@ -23,10 +24,13 @@ public class PlayerMoveAbility : PlayerAbility
         _characterController = GetComponent<CharacterController>();
         _animator =  GetComponent<Animator>();
         _cam = Camera.main;
+        _photonView = GetComponent<PhotonView>();
     }
 
     private void Update()
     {
+        if (!_photonView.IsMine) return;
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         

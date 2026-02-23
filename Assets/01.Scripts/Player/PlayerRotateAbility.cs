@@ -24,9 +24,9 @@ public class PlayerRotateAbility : MonoBehaviour
         _mx += Input.GetAxis("Mouse X") * _rotationSpeed * Time.deltaTime;
         _my += Input.GetAxis("Mouse Y") * _rotationSpeed * Time.deltaTime;
         
-        _my = Mathf.Clamp(_my, 0f, 90f);
+        _my = Mathf.Clamp(_my, -90f, 90f);
         
         transform.eulerAngles = new Vector3(0f, _mx, 0f);
-        _cameraRoot.localRotation = Quaternion.Euler(-_my, 0f, 0f);
+        _cameraRoot.localEulerAngles = new Vector3(-_my, 0f, 0f);
     }
 }

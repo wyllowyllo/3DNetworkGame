@@ -38,6 +38,8 @@ public class PlayerMoveAbility : MonoBehaviour
         
         Vector3 direction = new Vector3(h, 0, v);
         direction.Normalize();
+        direction = _cam.transform.TransformDirection(direction);
+        
         _animator.SetFloat("Speed", direction.magnitude);
         
         // 중력
@@ -50,7 +52,7 @@ public class PlayerMoveAbility : MonoBehaviour
             _yVeocity = JumpForce;
         }
        
-        direction = _cam.transform.TransformDirection(direction);
+      
         _characterController.Move(direction * _moveSpeed * Time.deltaTime);
         
        

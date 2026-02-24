@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMoveAbility : PlayerAbility
 {
+    [SerializeField] private float _staminaUnitPerSec = 1f;
     
     // 참조
     private CharacterController _characterController;
@@ -42,16 +43,33 @@ public class PlayerMoveAbility : PlayerAbility
         
         // 중력
         _yVeocity -= GRAVITY * Time.deltaTime;
-        direction.y = _yVeocity;
+      
         
         // 점프
         if (Input.GetKey(KeyCode.Space) && _characterController.isGrounded)
         {
-            _yVeocity = _owner.PlayerStat.JumpPower;
+            _yVeocity = _owner.PlayerPlayerStat.JumpPower;
         }
        
+        direction.y = _yVeocity;
+        
+        // 달리기
+        float moveSpeed = _owner.PlayerPlayerStat.MoveSpeed;
+        if (Input.GetKey(KeyCode.LeftShift) && _owner.CurrentStamina > 0)
+        {
+            if (!_characterController.isGrounded) return;
+            
+            moveSpeed = _owner.PlayerPlayerStat.RunSpeed;
+            _owner.CurrentStamina = Mathf.Clamp(_owner.CurrentStamina - _staminaUnitPerSec * Time.deltaTime, 0, _owner.MaxStamina);
+            _owner.OnStaminaChanged.Invoke();
+        }
+        else
+        {
+            _owner.CurrentStamina = Mathf.Clamp(_owner.CurrentStamina + _staminaUnitPerSec * Time.deltaTime, 0, _owner.MaxStamina);
+            _owner.OnStaminaChanged.Invoke();
+        }
       
-        _characterController.Move(direction * _owner.PlayerStat.MoveSpeed * Time.deltaTime);
+        _characterController.Move(direction * moveSpeed * Time.deltaTime);
         
        
     }

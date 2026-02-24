@@ -19,4 +19,9 @@ public class PlayerNicknameAbility : PlayerAbility
             _nicknameTextUI.color = Color.red;
         }
     }
+
+    private void Update()
+    {
+        transform.forward = Camera.main.transform.forward;
+    }
 }

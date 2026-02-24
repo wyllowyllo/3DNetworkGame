@@ -32,7 +32,7 @@ public class PlayerRotateAbility : PlayerAbility
     {
         if (!_photonView.IsMine) return;
             
-        float _rotationSpeed = _owner.PlayerStat.RotationSpeed;
+        float _rotationSpeed = _owner.PlayerPlayerStat.RotationSpeed;
         _mx += Input.GetAxis("Mouse X") * _rotationSpeed * Time.deltaTime;
         _my += Input.GetAxis("Mouse Y") * _rotationSpeed * Time.deltaTime;
         

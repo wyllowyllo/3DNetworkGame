@@ -33,7 +33,7 @@ public class PlayerAttackAbility : PlayerAbility
         
         _attackTimer += Time.deltaTime;
         
-        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= (1f / _owner.PlayerStat.AttackSpeed))
+        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= (1f / _owner.PlayerPlayerStat.AttackSpeed))
         {
             _attackTimer = 0f;
             Attack();

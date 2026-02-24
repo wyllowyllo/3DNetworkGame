@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-public class PlayerController : MonoBehaviour, IPunObservable
+public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
 {
     [SerializeField] private PlayerStat _playerStat;
 
@@ -91,5 +91,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
             OnHealthChanged.Invoke();
             OnStaminaChanged.Invoke();
         }
+    }
+
+    [PunRPC]
+    public void Takedamage(float damage)
+    {
+        Debug.Log("피격당함!");
+        
+        _playerStat.Health.Consume(damage);
+        OnHealthChanged.Invoke();
     }
 }

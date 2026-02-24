@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private Stat _stat;
-
-    public Stat PlayerStat => _stat;
+    private PhotonView _photonView;
     
+    public Stat PlayerStat => _stat;
+    public PhotonView PhotonView => _photonView;
+   
+
+
     private Dictionary<Type, PlayerAbility> _abilitiesCache = new();
 
-    
+    private void Awake()
+    {
+        _photonView = GetComponent<PhotonView>();
+    }
+
     public T GetAbility<T>() where T : PlayerAbility
     {
         var type = typeof(T);

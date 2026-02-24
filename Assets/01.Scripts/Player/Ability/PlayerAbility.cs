@@ -7,7 +7,7 @@ public abstract class PlayerAbility : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _owner = GetComponent<Player>();
+        _owner = GetComponentInParent<Player>();
     }
     
 }

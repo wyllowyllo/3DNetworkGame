@@ -3077,13 +3077,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   _playerStat:
-    Stamina: 100
-    Health: 100
-    MoveSpeed: 7
-    RunSpeed: 10
-    JumpPower: 2.5
-    RotationSpeed: 100
-    AttackSpeed: 0.6
+    Health:
+      _maxValue: 100
+      _regenRate: 20
+    Stamina:
+      _maxValue: 100
+      _regenRate: 20
+    MoveSpeed:
+      _value: 7
+    RunSpeed:
+      _value: 10
+    JumpPower:
+      _value: 2.5
+    RotationSpeed:
+      _value: 100
+    AttackSpeed:
+      _value: 0.6
   OnHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3102,7 +3111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc14ee76cdf9fe44a83739cc9965b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveAbility
-  _staminaForJump: 80
+  _staminaForJump: 30
+  _runDrainRate: 100
 --- !u!114 &6718135045409253147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3129,7 +3139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackAbility
   _attackOption: 0
-  _staminaForAttack: 50
+  _staminaForAttack: 20
 --- !u!114 &2970721384918541599
 MonoBehaviour:
   m_ObjectHideFlags: 0

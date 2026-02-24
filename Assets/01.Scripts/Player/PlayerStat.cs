@@ -1,14 +1,15 @@
-﻿
+
 using System;
 
 [Serializable]
 public class PlayerStat
 {
-    public float Stamina = 100f;
-    public float Health = 100f;
-    public float MoveSpeed = 7f;
-    public float RunSpeed = 10f;
-    public float JumpPower = 2.5f;
-    public float RotationSpeed = 100f;
-    public float AttackSpeed = 0.6f;
+    public ConsumableStat Health;    // MaxValue: 100, RegenRate: 0
+    public ConsumableStat Stamina;   // MaxValue: 100, RegenRate: 100
+
+    public ValueStat MoveSpeed;      // 7
+    public ValueStat RunSpeed;       // 10
+    public ValueStat JumpPower;      // 2.5
+    public ValueStat RotationSpeed;  // 100
+    public ValueStat AttackSpeed;    // 0.6
 }

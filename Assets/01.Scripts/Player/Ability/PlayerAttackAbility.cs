@@ -12,6 +12,8 @@ public class PlayerAttackAbility : PlayerAbility
     }
 
     [SerializeField] private EAttackOption _attackOption;
+    [SerializeField] private float _staminaForAttack = 15f;
+    
     private Animator _animator;
     private PhotonView _photonView;
     
@@ -33,13 +35,22 @@ public class PlayerAttackAbility : PlayerAbility
         
         _attackTimer += Time.deltaTime;
         
-        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= (1f / _owner.PlayerPlayerStat.AttackSpeed))
+        if (Input.GetMouseButtonDown(0) &&  _attackTimer >= _owner.PlayerStat.AttackSpeed)
         {
-            _attackTimer = 0f;
-            Attack();
+           TryAttack();
         }
     }
 
+    private void TryAttack()
+    {
+        if (_owner.CurrentStamina < _staminaForAttack) return;
+        
+        _attackTimer = 0f;
+        _owner.CurrentStamina = Mathf.Clamp(_owner.CurrentStamina - _staminaForAttack, 0, _owner.MaxStamina);
+        _owner.OnStaminaChanged.Invoke();
+        
+        Attack();
+    }
     private void Attack()
     {
         string attackAnimation = "";

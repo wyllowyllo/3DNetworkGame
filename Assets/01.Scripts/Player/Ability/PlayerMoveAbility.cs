@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMoveAbility : PlayerAbility
 {
-    [SerializeField] private float _staminaUnitPerSec = 1f;
+    [SerializeField] private float _staminaForJump = 10f;
     
     // 참조
     private CharacterController _characterController;
@@ -46,31 +46,32 @@ public class PlayerMoveAbility : PlayerAbility
       
         
         // 점프
-        if (Input.GetKey(KeyCode.Space) && _characterController.isGrounded)
+        if (Input.GetKey(KeyCode.Space) && _characterController.isGrounded && _owner.CurrentStamina > _staminaForJump)
         {
-            _yVeocity = _owner.PlayerPlayerStat.JumpPower;
+            _yVeocity = _owner.PlayerStat.JumpPower;
+            _owner.CurrentStamina = Mathf.Clamp(_owner.CurrentStamina -  _staminaForJump, 0, _owner.MaxStamina);
+            _owner.OnStaminaChanged.Invoke();
         }
        
         direction.y = _yVeocity;
         
         // 달리기
-        float moveSpeed = _owner.PlayerPlayerStat.MoveSpeed;
         if (Input.GetKey(KeyCode.LeftShift) && _owner.CurrentStamina > 0)
         {
             if (!_characterController.isGrounded) return;
             
-            moveSpeed = _owner.PlayerPlayerStat.RunSpeed;
-            _owner.CurrentStamina = Mathf.Clamp(_owner.CurrentStamina - _staminaUnitPerSec * Time.deltaTime, 0, _owner.MaxStamina);
+            _owner.CurrentStamina -= _owner.PlayerStat.Stamina * Time.deltaTime;
+            _owner.CurrentStamina = Mathf.Max(0, _owner.CurrentStamina);
+            _characterController.Move(direction * Time.deltaTime * _owner.PlayerStat.RunSpeed);
             _owner.OnStaminaChanged.Invoke();
         }
         else
         {
-            _owner.CurrentStamina = Mathf.Clamp(_owner.CurrentStamina + _staminaUnitPerSec * Time.deltaTime, 0, _owner.MaxStamina);
+            _owner.CurrentStamina += _owner.PlayerStat.Stamina * Time.deltaTime;
+            _owner.CurrentStamina = Mathf.Min(_owner.CurrentStamina, _owner.MaxStamina);
+            _characterController.Move(direction * Time.deltaTime * _owner.PlayerStat.MoveSpeed);
             _owner.OnStaminaChanged.Invoke();
         }
-      
-        _characterController.Move(direction * moveSpeed * Time.deltaTime);
-        
        
     }
 }

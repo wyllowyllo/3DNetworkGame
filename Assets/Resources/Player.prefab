@@ -3102,7 +3102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc14ee76cdf9fe44a83739cc9965b69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMoveAbility
-  _staminaUnitPerSec: 10
+  _staminaForJump: 80
 --- !u!114 &6718135045409253147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3129,6 +3129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttackAbility
   _attackOption: 0
+  _staminaForAttack: 50
 --- !u!114 &2970721384918541599
 MonoBehaviour:
   m_ObjectHideFlags: 0

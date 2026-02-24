@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
     private PhotonView _photonView;
     
     // 프로퍼티
-    public PlayerStat PlayerPlayerStat => _playerStat;
+    public PlayerStat PlayerStat => _playerStat;
     public PhotonView PhotonView => _photonView;
     public float CurrentHealth { get => _currentHealth; set => _currentHealth = value; }
     public float CurrentStamina { get => _currentStamina; set => _currentStamina = value; }
@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour, IPunObservable
         throw new Exception($"어빌리티 {type.Name}을 {gameObject.name}에서 찾을 수 없습니다.");
     }
 
+    // TODO : RPC 방식으로 변경
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         // 스트림 : '시냇물'처럼 데이터가 멈추지 않고 연속적으로 흐르는 데이터 흐름
@@ -70,17 +71,14 @@ public class PlayerController : MonoBehaviour, IPunObservable
         // 읽기 / 쓰기 모드
         if (stream.IsWriting)
         {
-            Debug.Log("전송중..");
-            
             stream.SendNext(_currentHealth);
             stream.SendNext(_currentStamina);
         }
         else if (stream.IsReading)
         {
-            Debug.Log("수신중..");
             
-            _currentHealth = (float)stream.ReceiveNext();
-            _currentStamina = (float)stream.ReceiveNext();
+            _currentHealth = (float)stream.ReceiveNext(); // 준 순서대로 받는다
+            _currentStamina = (float)stream.ReceiveNext(); // 준 순서대로 받는다
 
             OnHealthChanged.Invoke();
             OnStaminaChanged.Invoke();

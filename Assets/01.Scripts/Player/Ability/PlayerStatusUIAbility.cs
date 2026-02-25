@@ -1,4 +1,5 @@
 ﻿using System;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,4 +30,6 @@ public class PlayerStatusUIAbility : PlayerAbility
         
         _staminaBar.value = _owner.CurrentStamina /  _owner.MaxStamina;
     }
+
+    
 }

@@ -31,7 +31,8 @@ public class PlayerMoveAbility : PlayerAbility
     private void Update()
     {
         if (!_photonView.IsMine) return;
-
+        if(_owner.IsDead) return;
+        
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 

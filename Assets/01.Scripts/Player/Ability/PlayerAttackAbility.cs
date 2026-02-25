@@ -31,6 +31,7 @@ public class PlayerAttackAbility : PlayerAbility
     private void Update()
     {
         if (!_photonView.IsMine) return;
+        if(_owner.IsDead) return;
 
         _attackTimer += Time.deltaTime;
 

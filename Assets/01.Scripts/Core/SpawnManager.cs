@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -10,7 +11,7 @@ public class SpawnManager : MonoBehaviour
     
     [SerializeField] Transform[] _spawnPoints;
     
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -24,7 +25,13 @@ public class SpawnManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        Vector3 spawnPoint = (_spawnPoints.Length > 0) ? _spawnPoints[(int)Random.Range(0, _spawnPoints.Length)].position : Vector3.zero;
+        Vector3 spawnPoint = GetRandomSpawnPosition();
         PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity);
+    }
+
+    
+    public Vector3 GetRandomSpawnPosition()
+    {
+        return (_spawnPoints.Length > 0) ? _spawnPoints[(int)Random.Range(0, _spawnPoints.Length)].position : Vector3.zero;
     }
 }

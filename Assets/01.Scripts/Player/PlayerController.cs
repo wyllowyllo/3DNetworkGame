@@ -1,21 +1,25 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
 
-
 public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
 {
     [SerializeField] private PlayerStat _playerStat;
-
+    
+    [SerializeField] private float _respawnDelay = 5f;
+    
     // 이벤트
     public UnityEvent OnHealthChanged  = new UnityEvent();
     public UnityEvent OnStaminaChanged = new UnityEvent();
 
     // 참조
     private PhotonView _photonView;
-
+    private Animator _animator;
+    private CharacterController _characterController;
+    
     // 프로퍼티
     public PlayerStat  PlayerStat      => _playerStat;
     public PhotonView  PhotonView      => _photonView;
@@ -23,17 +27,22 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
     public float       CurrentStamina  => _playerStat.Stamina.Value;
     public float       MaxHealth       => _playerStat.Health.MaxValue;
     public float       MaxStamina      => _playerStat.Stamina.MaxValue;
+    public bool        IsDead          => _playerStat.Health.Value <= 0;
     public bool HasEnoughStamina(float amount) => _playerStat.Stamina.Value >= amount;
 
     // 스태미나 메서드
     public void DrainStamina(float amount)
     {
+        if(IsDead) return;
+        
         _playerStat.Stamina.Consume(amount);
         OnStaminaChanged.Invoke();
     }
 
     public void RegenStamina(float deltaTime)
     {
+        if(IsDead) return;
+        
         _playerStat.Stamina.Regenerate(deltaTime);
         OnStaminaChanged.Invoke();
     }
@@ -43,7 +52,9 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
     private void Awake()
     {
         _photonView = GetComponent<PhotonView>();
-
+        _animator = GetComponent<Animator>();
+        _characterController = GetComponent<CharacterController>();
+        
         _playerStat.Health.Initialize();
         _playerStat.Stamina.Initialize();
     }
@@ -92,13 +103,47 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
             OnStaminaChanged.Invoke();
         }
     }
-
+    
     [PunRPC]
     public void Takedamage(float damage)
     {
+        if(IsDead) return;
+        
         Debug.Log("피격당함!");
         
         _playerStat.Health.Consume(damage);
         OnHealthChanged.Invoke();
+
+        if (IsDead)
+        {
+            _animator.SetTrigger("Die");
+
+            StartCoroutine(Death_Coroutine());
+               
+        }
+    }
+    
+    private IEnumerator Death_Coroutine()
+    {
+        _characterController.enabled = false;
+        
+       yield return new WaitForSeconds(_respawnDelay);
+       
+       _playerStat.Health.Initialize();
+       _playerStat.Stamina.Initialize();
+       OnHealthChanged.Invoke();
+       OnStaminaChanged.Invoke();
+       
+       
+       _animator.SetTrigger("Revive");
+       
+       if (_photonView.IsMine)
+       {
+           var randomSpawnPoint = SpawnManager.Instance.GetRandomSpawnPosition();
+           transform.position = randomSpawnPoint;
+       }
+      
+       
+       _characterController.enabled = true;
     }
 }

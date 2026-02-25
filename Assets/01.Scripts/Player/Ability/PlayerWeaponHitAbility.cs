@@ -15,7 +15,7 @@ public class PlayerWeaponHitAbility : PlayerAbility
             
             // 상대방의 TakeDamage를 RPC로 호출한다
             PlayerController otherPlayer = other.GetComponent<PlayerController>();
-            otherPlayer.PhotonView.RPC(nameof(PlayerController.Takedamage), RpcTarget.All, _owner.PlayerStat.Damage.Value);
+            otherPlayer.PhotonView.RPC(nameof(PlayerController.TakeDamage), RpcTarget.All, _owner.PlayerStat.Damage.Value);
             
            _owner.GetAbility<PlayerWeaponColliderAbility>().DeactiveCollider();
         }

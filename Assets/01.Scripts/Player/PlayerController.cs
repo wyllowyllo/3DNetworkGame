@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
 {
@@ -119,10 +120,24 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
             _animator.SetTrigger("Die");
 
             PhotonRoomManager.Instance.OnPlayerDeath(attackerActorNumber);
+
+            if (_photonView.IsMine)
+            {
+                // 아이템 생성
+                MakeScoreItems();
+            }
             
             StartCoroutine(Death_Coroutine());
-               
-            
+        }
+    }
+
+    private void MakeScoreItems()
+    {
+        int randomCount = Random.Range(3, 5);
+
+        for (int i = 0; i < randomCount; i++)
+        {
+            PhotonNetwork.Instantiate("ScoreItem", transform.position, Quaternion.identity);
         }
     }
     

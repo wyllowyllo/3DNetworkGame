@@ -8,9 +8,12 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
 {
-    [SerializeField] private PlayerStat _playerStat;
+    public float Score { get; set; }
     
+    [SerializeField] private PlayerStat _playerStat;
     [SerializeField] private float _respawnDelay = 5f;
+
+   
     
     // 이벤트
     public UnityEvent OnHealthChanged  = new UnityEvent();
@@ -29,6 +32,8 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
     public float       MaxHealth       => _playerStat.Health.MaxValue;
     public float       MaxStamina      => _playerStat.Stamina.MaxValue;
     public bool        IsDead          => _playerStat.Health.Value <= 0;
+    
+
     public bool HasEnoughStamina(float amount) => _playerStat.Stamina.Value >= amount;
 
     // 스태미나 메서드
@@ -94,11 +99,13 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
         {
             stream.SendNext(_playerStat.Health.Value);
             stream.SendNext(_playerStat.Stamina.Value);
+            stream.SendNext(Score);
         }
         else if (stream.IsReading)
         {
             _playerStat.Health.SetValue((float)stream.ReceiveNext());   // 준 순서대로 받는다
             _playerStat.Stamina.SetValue((float)stream.ReceiveNext());  // 준 순서대로 받는다
+            Score = (float)stream.ReceiveNext();
 
             OnHealthChanged.Invoke();
             OnStaminaChanged.Invoke();
@@ -119,31 +126,23 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
         {
             _animator.SetTrigger("Die");
 
-            PhotonRoomManager.Instance.OnPlayerDeath(attackerActorNumber);
-
-            if (_photonView.IsMine)
-            {
-                // 아이템 생성
-                MakeScoreItems();
-            }
+            PhotonRoomManager.Instance.OnPlayerDeath(attackerActorNumber, PhotonView.Owner.ActorNumber);
             
             StartCoroutine(Death_Coroutine());
         }
     }
 
-    private void MakeScoreItems()
-    {
-        int randomCount = Random.Range(3, 5);
-
-        for (int i = 0; i < randomCount; i++)
-        {
-            PhotonNetwork.Instantiate("ScoreItem", transform.position, Quaternion.identity);
-        }
-    }
+   
     
     private IEnumerator Death_Coroutine()
     {
         _characterController.enabled = false;
+        
+        if (_photonView.IsMine)
+        {
+            // 아이템 생성
+            ItemObjectFactory.Instance.RequestMakeScoreItem(transform.position);
+        }
         
        yield return new WaitForSeconds(_respawnDelay);
        

@@ -42,6 +42,9 @@ MonoBehaviour:
   - PlayAttackAnimation
   - Takedamage
   - TakeDamage
+  - RequestMakeScoreItem
+  - Delete
+  - MakeScoreItems
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

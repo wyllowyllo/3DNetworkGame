@@ -8,9 +8,12 @@ using Random = UnityEngine.Random;
 public class SpawnManager : MonoBehaviour
 {
     public static SpawnManager Instance { get; private set; }
+   
     
     [SerializeField] Transform[] _spawnPoints;
+    [SerializeField] float _respawnDelay;
     
+   
     
     private void Awake()
     {

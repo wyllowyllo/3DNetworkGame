@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] float _respawnDelay;
 
     [SerializeField] Transform[] _bearSpawnPoints;
-    [SerializeField] string _bearPrefabName = "BearMonster";
+    
     
    
     
@@ -45,6 +45,6 @@ public class SpawnManager : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
         foreach (var point in _bearSpawnPoints)
-            PhotonNetwork.InstantiateRoomObject(_bearPrefabName, point.position, point.rotation);
+            PhotonNetwork.InstantiateRoomObject("Bear", point.position, point.rotation);
     }
 }

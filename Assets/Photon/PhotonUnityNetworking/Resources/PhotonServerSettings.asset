@@ -45,6 +45,10 @@ MonoBehaviour:
   - RequestMakeScoreItem
   - Delete
   - MakeScoreItems
+  - RPC_PlayAttackAnimation
+  - RPC_PlayDeathAnimation
+  - RPC_PlayHitAnimation
+  - RPC_Respawn
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -118,8 +118,8 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         {
             case EBearState.Idle:       return new BearIdleState(this);
             case EBearState.Patrol:     return new BearPatrolState(this);
-            case EBearState.MoveReturn: return new BearMoveReturnState(this);
-            case EBearState.MoveAttack: return new BearMoveAttackState(this);
+            case EBearState.Comeback:   return new BearComebackState(this);
+            case EBearState.Approach:   return new BearApproachState(this);
             case EBearState.Attack:     return new BearAttackState(this);
             case EBearState.AttackWait: return new BearAttackWaitState(this);
             case EBearState.Hit:        return new BearHitState(this);
@@ -130,28 +130,20 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
 
     // ─── RPC 래퍼 메서드 (상태 클래스에서 호출) ───────────────────
 
-    public void TriggerAttackAnim(int index)
-        => photonView.RPC(nameof(RPC_PlayAttackAnimation), RpcTarget.All, index);
-
-    public void TriggerHitAnim()
-        => photonView.RPC(nameof(RPC_PlayHitAnimation), RpcTarget.All);
-
-    public void TriggerDeathAnim()
-        => photonView.RPC(nameof(RPC_PlayDeathAnimation), RpcTarget.All);
+    public void TriggerAttackAnim(int index) => photonView.RPC(nameof(RPC_PlayAttackAnimation), RpcTarget.All, index);
+    public void TriggerHitAnim() => photonView.RPC(nameof(RPC_PlayHitAnimation), RpcTarget.All);
+    public void TriggerDeathAnim() => photonView.RPC(nameof(RPC_PlayDeathAnimation), RpcTarget.All);
 
     // ─── [PunRPC] 수신 메서드 (Animator 실제 호출) ────────────────
 
     [PunRPC]
-    private void RPC_PlayAttackAnimation(int index)
-        => Animator.SetTrigger($"Attack{index}");
+    private void RPC_PlayAttackAnimation(int index) => Animator.SetTrigger($"Attack{index}");
 
     [PunRPC]
-    private void RPC_PlayHitAnimation()
-        => Animator.SetTrigger("Hit");
+    private void RPC_PlayHitAnimation() => Animator.SetTrigger("Hit");
 
     [PunRPC]
-    private void RPC_PlayDeathAnimation()
-        => Animator.SetTrigger("Death");
+    private void RPC_PlayDeathAnimation() => Animator.SetTrigger("Death");
 
     [PunRPC]
     private void RPC_Respawn(Vector3 position)

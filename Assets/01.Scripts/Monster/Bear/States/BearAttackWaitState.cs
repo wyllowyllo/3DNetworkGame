@@ -21,7 +21,7 @@ public class BearAttackWaitState : BearStateBase
 
         if (_ctx.Target == null)
         {
-            _ctx.ChangeState(new BearMoveReturnState(_ctx));
+            _ctx.ChangeState(new BearIdleState(_ctx));
             return;
         }
 
@@ -29,6 +29,6 @@ public class BearAttackWaitState : BearStateBase
         if (dist <= _ctx.Stat.AttackRange)
             _ctx.ChangeState(new BearAttackState(_ctx));
         else
-            _ctx.ChangeState(new BearMoveAttackState(_ctx));
+            _ctx.ChangeState(new BearApproachState(_ctx));
     }
 }

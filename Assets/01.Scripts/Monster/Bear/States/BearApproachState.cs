@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class BearMoveAttackState : BearStateBase
+public class BearApproachState : BearStateBase
 {
-    public override int StateId => (int)EBearState.MoveAttack;
+    public override int StateId => (int)EBearState.Approach;
 
-    public BearMoveAttackState(BearController ctx) : base(ctx) { }
+    public BearApproachState(BearController ctx) : base(ctx) { }
 
     public override void Enter()
     {
@@ -16,13 +16,13 @@ public class BearMoveAttackState : BearStateBase
     {
         if (_ctx.Target == null)
         {
-            _ctx.ChangeState(new BearMoveReturnState(_ctx));
+            _ctx.ChangeState(new BearComebackState(_ctx));
             return;
         }
 
         if (Vector3.Distance(_ctx.transform.position, _ctx.BasePosition) > _ctx.Stat.ReturnRange)
         {
-            _ctx.ChangeState(new BearMoveReturnState(_ctx));
+            _ctx.ChangeState(new BearComebackState(_ctx));
             return;
         }
 

@@ -5,8 +5,8 @@ public enum EBearState
 {
     Idle       = 0,
     Patrol     = 1,
-    MoveReturn = 2,
-    MoveAttack = 3,
+    Comeback   = 2,
+    Approach   = 3,
     Attack     = 4,
     AttackWait = 5,
     Hit        = 6,

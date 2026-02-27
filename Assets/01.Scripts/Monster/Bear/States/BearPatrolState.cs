@@ -18,13 +18,7 @@ public class BearPatrolState : BearStateBase
         DetectPlayer();
         if (_ctx.Target != null)
         {
-            _ctx.ChangeState(new BearMoveAttackState(_ctx));
-            return;
-        }
-
-        if (Vector3.Distance(_ctx.transform.position, _ctx.BasePosition) > _ctx.Stat.ReturnRange)
-        {
-            _ctx.ChangeState(new BearMoveReturnState(_ctx));
+            _ctx.ChangeState(new BearApproachState(_ctx));
             return;
         }
 

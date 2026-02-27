@@ -22,7 +22,7 @@ public class BearIdleState : BearStateBase
         DetectPlayer();
         if (_ctx.Target != null)
         {
-            _ctx.ChangeState(new BearMoveAttackState(_ctx));
+            _ctx.ChangeState(new BearApproachState(_ctx));
             return;
         }
 

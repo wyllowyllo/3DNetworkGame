@@ -1,8 +1,8 @@
-public class BearMoveReturnState : BearStateBase
+public class BearComebackState : BearStateBase
 {
-    public override int StateId => (int)EBearState.MoveReturn;
+    public override int StateId => (int)EBearState.Comeback;
 
-    public BearMoveReturnState(BearController ctx) : base(ctx) { }
+    public BearComebackState(BearController ctx) : base(ctx) { }
 
     public override void Enter()
     {
@@ -17,7 +17,7 @@ public class BearMoveReturnState : BearStateBase
         DetectPlayer();
         if (_ctx.Target != null)
         {
-            _ctx.ChangeState(new BearMoveAttackState(_ctx));
+            _ctx.ChangeState(new BearApproachState(_ctx));
             return;
         }
 

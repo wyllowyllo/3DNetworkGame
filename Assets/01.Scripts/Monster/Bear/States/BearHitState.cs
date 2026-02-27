@@ -20,6 +20,6 @@ public class BearHitState : BearStateBase
     {
         _hitRecoveryTimer -= Time.deltaTime;
         if (_hitRecoveryTimer <= 0f)
-            _ctx.ChangeState(new BearMoveAttackState(_ctx));
+            _ctx.ChangeState(new BearApproachState(_ctx));
     }
 }

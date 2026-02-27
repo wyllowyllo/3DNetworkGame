@@ -11,8 +11,6 @@ public class ItemObject : MonoBehaviourPun
 
    private void OnTriggerEnter(Collider other)
    {
-      Debug.Log("충돌!");
-      
       if (other.CompareTag("Player"))
       {
          

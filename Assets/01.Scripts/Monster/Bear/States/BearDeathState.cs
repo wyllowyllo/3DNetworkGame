@@ -5,14 +5,14 @@ public class BearDeathState : BearStateBase
 {
     public override int StateId => (int)EBearState.Death;
 
-    public BearDeathState(BearController ctx) : base(ctx) { }
+    public BearDeathState(BearController bearController) : base(bearController) { }
 
     public override void Enter()
     {
-        _ctx.Agent.isStopped = true;
-        _ctx.Agent.enabled   = false;
-        _ctx.TriggerDeathAnim();
-        _ctx.StartCoroutine(_ctx.DeathRespawn_Coroutine());
+        BearController.Agent.isStopped = true;
+        BearController.Agent.enabled   = false;
+        BearController.TriggerDeathAnim();
+        BearController.StartCoroutine(BearController.DeathRespawn_Coroutine());
     }
 
     public override void Update() { }

@@ -57,6 +57,7 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         else
         {
             Animator.SetFloat("Speed", _syncedSpeed);
+            Animator.SetBool("IsAttacking", _syncedState == (int)EBearState.Attack);
         }
     }
 
@@ -121,7 +122,6 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
             case EBearState.Comeback:   return new BearComebackState(this);
             case EBearState.Approach:   return new BearApproachState(this);
             case EBearState.Attack:     return new BearAttackState(this);
-            case EBearState.AttackWait: return new BearAttackWaitState(this);
             case EBearState.Hit:        return new BearHitState(this);
             case EBearState.Death:      return new BearDeathState(this);
             default:                    return new BearIdleState(this);
@@ -130,9 +130,10 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
 
     // ─── RPC 래퍼 메서드 (상태 클래스에서 호출) ───────────────────
 
-    public void TriggerAttackAnim(int index) => photonView.RPC(nameof(RPC_PlayAttackAnimation), RpcTarget.All, index);
-    public void TriggerHitAnim() => photonView.RPC(nameof(RPC_PlayHitAnimation), RpcTarget.All);
-    public void TriggerDeathAnim() => photonView.RPC(nameof(RPC_PlayDeathAnimation), RpcTarget.All);
+    public void SetAttackStance(bool active)    => Animator.SetBool("IsAttacking", active);
+    public void TriggerAttackAnim(int index)    => photonView.RPC(nameof(RPC_PlayAttackAnimation), RpcTarget.All, index);
+    public void TriggerHitAnim()                => photonView.RPC(nameof(RPC_PlayHitAnimation), RpcTarget.All);
+    public void TriggerDeathAnim()              => photonView.RPC(nameof(RPC_PlayDeathAnimation), RpcTarget.All);
 
     // ─── [PunRPC] 수신 메서드 (Animator 실제 호출) ────────────────
 
@@ -155,6 +156,7 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
 
     // ─── 공격 데미지 적용 (BearAttackState에서 호출) ─────────────
 
+    // TODO : 히트박스에서 공격 처리 담당하기
     public void ApplyDamageToTarget()
     {
         if (Target == null) return;

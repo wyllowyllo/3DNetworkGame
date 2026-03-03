@@ -5,25 +5,43 @@ public class BearAttackState : BearStateBase
     public override int StateId => (int)EBearState.Attack;
 
     private static readonly int[] AttackIndices = { 1, 2, 3, 5 };
-    private float _attackCooldownTimer;
+    private float _timer;
 
-    public BearAttackState(BearController ctx) : base(ctx) { }
+    public BearAttackState(BearController bearController) : base(bearController) { }
 
     public override void Enter()
     {
-        _ctx.Agent.isStopped = true;
-        _attackCooldownTimer = _ctx.Stat.AttackCooldown;
-
-        _ctx.ApplyDamageToTarget();
-
-        int index = AttackIndices[Random.Range(0, AttackIndices.Length)];
-        _ctx.TriggerAttackAnim(index);
+        BearController.Agent.isStopped = true;
+        _timer = BearController.Stat.AttackCooldown;
+        BearController.SetAttackStance(true);
     }
 
     public override void Update()
     {
-        _attackCooldownTimer -= Time.deltaTime;
-        if (_attackCooldownTimer <= 0f)
-            _ctx.ChangeState(new BearAttackWaitState(_ctx));
+        if (BearController.Target == null)
+        {
+            BearController.ChangeState(new BearComebackState(BearController));
+            return;
+        }
+
+        if (Vector3.Distance(BearController.transform.position, BearController.Target.position) > BearController.Stat.AttackRange)
+        {
+            BearController.ChangeState(new BearApproachState(BearController));
+            return;
+        }
+
+        _timer -= Time.deltaTime;
+        if (_timer <= 0f)
+        {
+            _timer = BearController.Stat.AttackCooldown;
+            BearController.ApplyDamageToTarget();
+            int index = AttackIndices[Random.Range(0, AttackIndices.Length)];
+            BearController.TriggerAttackAnim(index);
+        }
+    }
+
+    public override void Exit()
+    {
+        BearController.SetAttackStance(false);
     }
 }

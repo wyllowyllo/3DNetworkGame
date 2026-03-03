@@ -6,12 +6,12 @@ public class BearIdleState : BearStateBase
 
     private float _idleTimer;
 
-    public BearIdleState(BearController ctx) : base(ctx) { }
+    public BearIdleState(BearController bearController) : base(bearController) { }
 
     public override void Enter()
     {
-        _ctx.Agent.isStopped = true;
-        _ctx.Agent.ResetPath();
+        BearController.Agent.isStopped = true;
+        BearController.Agent.ResetPath();
         _idleTimer = Random.Range(2f, 5f);
     }
 
@@ -20,13 +20,13 @@ public class BearIdleState : BearStateBase
         _idleTimer -= Time.deltaTime;
 
         DetectPlayer();
-        if (_ctx.Target != null)
+        if (BearController.Target != null)
         {
-            _ctx.ChangeState(new BearApproachState(_ctx));
+            BearController.ChangeState(new BearApproachState(BearController));
             return;
         }
 
         if (_idleTimer <= 0f)
-            _ctx.ChangeState(new BearPatrolState(_ctx));
+            BearController.ChangeState(new BearPatrolState(BearController));
     }
 }

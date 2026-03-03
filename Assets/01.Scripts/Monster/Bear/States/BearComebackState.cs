@@ -2,26 +2,26 @@ public class BearComebackState : BearStateBase
 {
     public override int StateId => (int)EBearState.Comeback;
 
-    public BearComebackState(BearController ctx) : base(ctx) { }
+    public BearComebackState(BearController bearController) : base(bearController) { }
 
     public override void Enter()
     {
-        _ctx.Target          = null;
-        _ctx.Agent.isStopped = false;
-        _ctx.Agent.speed     = _ctx.Stat.MoveSpeed.Value;
-        _ctx.Agent.SetDestination(_ctx.BasePosition);
+        BearController.Target          = null;
+        BearController.Agent.isStopped = false;
+        BearController.Agent.speed     = BearController.Stat.MoveSpeed.Value;
+        BearController.Agent.SetDestination(BearController.BasePosition);
     }
 
     public override void Update()
     {
         DetectPlayer();
-        if (_ctx.Target != null)
+        if (BearController.Target != null)
         {
-            _ctx.ChangeState(new BearApproachState(_ctx));
+            BearController.ChangeState(new BearApproachState(BearController));
             return;
         }
 
-        if (!_ctx.Agent.pathPending && _ctx.Agent.remainingDistance < 1f)
-            _ctx.ChangeState(new BearIdleState(_ctx));
+        if (!BearController.Agent.pathPending && BearController.Agent.remainingDistance < 1f)
+            BearController.ChangeState(new BearIdleState(BearController));
     }
 }

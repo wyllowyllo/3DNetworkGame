@@ -19,13 +19,13 @@ public enum EBearState
 /// </summary>
 public abstract class BearStateBase : IMonsterState
 {
-    protected BearController _ctx;
+    protected BearController BearController;
 
     public abstract int StateId { get; }
 
-    protected BearStateBase(BearController ctx)
+    protected BearStateBase(BearController bearController)
     {
-        _ctx = ctx;
+        BearController = bearController;
     }
 
     public abstract void Enter();
@@ -34,30 +34,30 @@ public abstract class BearStateBase : IMonsterState
 
     public virtual void OnTakeDamage(float damage, int attackerActorNumber)
     {
-        _ctx.Stat.Health.Consume(damage);
+        BearController.Stat.Health.Consume(damage);
 
-        if (_ctx.Stat.Health.Value <= 0f)
-            _ctx.ChangeState(new BearDeathState(_ctx));
+        if (BearController.Stat.Health.Value <= 0f)
+            BearController.ChangeState(new BearDeathState(BearController));
         else
-            _ctx.ChangeState(new BearHitState(_ctx));
+            BearController.ChangeState(new BearHitState(BearController));
     }
 
     protected void DetectPlayer()
     {
         Collider[] hits = Physics.OverlapSphere(
-            _ctx.transform.position, _ctx.Stat.DetectRange,
+            BearController.transform.position, BearController.Stat.DetectRange,
             LayerMask.GetMask("Player"));
 
-        _ctx.Target = null;
+        BearController.Target = null;
         float minDist = float.MaxValue;
 
         foreach (var col in hits)
         {
-            float d = Vector3.Distance(_ctx.transform.position, col.transform.position);
+            float d = Vector3.Distance(BearController.transform.position, col.transform.position);
             if (d < minDist)
             {
                 minDist     = d;
-                _ctx.Target = col.transform;
+                BearController.Target = col.transform;
             }
         }
     }
@@ -66,13 +66,13 @@ public abstract class BearStateBase : IMonsterState
     {
         for (int i = 0; i < 10; i++)
         {
-            Vector3 randomDir = Random.insideUnitSphere * _ctx.Stat.PatrolRadius;
-            randomDir += _ctx.BasePosition;
+            Vector3 randomDir = Random.insideUnitSphere * BearController.Stat.PatrolRadius;
+            randomDir += BearController.BasePosition;
 
-            if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, _ctx.Stat.PatrolRadius, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomDir, out NavMeshHit hit, BearController.Stat.PatrolRadius, NavMesh.AllAreas))
                 return hit.position;
         }
 
-        return _ctx.BasePosition;
+        return BearController.BasePosition;
     }
 }

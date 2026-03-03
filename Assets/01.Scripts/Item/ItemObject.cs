@@ -13,8 +13,11 @@ public class ItemObject : MonoBehaviourPun
    {
       if (other.CompareTag("Player"))
       {
+         PhotonView pv = other.GetComponent<PhotonView>();
+         if (pv.IsMine) return;
          
-         other.GetComponent<PlayerController>().Score += _itemScore;
+         //other.GetComponent<PlayerController>().Score += _itemScore;
+         ScoreManager.Instance.AddScore(_itemScore);
          
          ItemObjectFactory.Instance.RequestDelete(photonView.ViewID);
       }

@@ -4207,7 +4207,7 @@ GameObject:
   - component: {fileID: 446539094}
   - component: {fileID: 446539093}
   m_Layer: 5
-  m_Name: KillCountText
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4594,6 +4594,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464456334}
   m_CullTransparentMesh: 1
+--- !u!1 &479044651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 479044652}
+  - component: {fileID: 479044653}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &479044652
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479044651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1765657534}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &479044653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 479044651}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 100164a3d07d4f79a747f3c351a3c306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_01.Scripts.Core.ScoreManager
 --- !u!1 &487037179
 GameObject:
   m_ObjectHideFlags: 0
@@ -8166,7 +8210,7 @@ GameObject:
   - component: {fileID: 878891443}
   - component: {fileID: 878891442}
   m_Layer: 5
-  m_Name: KillCountText
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8834,6 +8878,7 @@ GameObject:
   - component: {fileID: 971839906}
   - component: {fileID: 971839905}
   - component: {fileID: 971839904}
+  - component: {fileID: 971839907}
   m_Layer: 5
   m_Name: 1st
   m_TagString: Untagged
@@ -8927,6 +8972,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 971839902}
   m_CullTransparentMesh: 1
+--- !u!114 &971839907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 971839902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f3698a4f4946e7a41b03e6b6a0db03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_01.Scripts.UI.UI_ScoreItem
+  _nickNameText: {fileID: 1331330834}
+  _scoreText: {fileID: 1744174777}
 --- !u!1001 &988111311
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10170,6 +10229,7 @@ GameObject:
   - component: {fileID: 1134707630}
   - component: {fileID: 1134707629}
   - component: {fileID: 1134707628}
+  - component: {fileID: 1134707631}
   m_Layer: 5
   m_Name: 3rd
   m_TagString: Untagged
@@ -10263,6 +10323,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134707626}
   m_CullTransparentMesh: 1
+--- !u!114 &1134707631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134707626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f3698a4f4946e7a41b03e6b6a0db03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_01.Scripts.UI.UI_ScoreItem
+  _nickNameText: {fileID: 464456337}
+  _scoreText: {fileID: 446539094}
 --- !u!1001 &1137802079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10349,6 +10423,7 @@ GameObject:
   - component: {fileID: 1146565550}
   - component: {fileID: 1146565549}
   - component: {fileID: 1146565548}
+  - component: {fileID: 1146565551}
   m_Layer: 5
   m_Name: 2nd
   m_TagString: Untagged
@@ -10442,6 +10517,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1146565546}
   m_CullTransparentMesh: 1
+--- !u!114 &1146565551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146565546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f3698a4f4946e7a41b03e6b6a0db03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_01.Scripts.UI.UI_ScoreItem
+  _nickNameText: {fileID: 1476019915}
+  _scoreText: {fileID: 878891443}
 --- !u!1001 &1148846270
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16829,7 +16918,7 @@ GameObject:
   - component: {fileID: 1744174777}
   - component: {fileID: 1744174776}
   m_Layer: 5
-  m_Name: KillCountText
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17008,6 +17097,7 @@ Transform:
   - {fileID: 1511665611}
   - {fileID: 2030765070}
   - {fileID: 1885698024}
+  - {fileID: 479044652}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1769592671
@@ -18321,6 +18411,7 @@ GameObject:
   - component: {fileID: 1906655327}
   - component: {fileID: 1906655326}
   - component: {fileID: 1906655325}
+  - component: {fileID: 1906655329}
   m_Layer: 5
   m_Name: PanelScore
   m_TagString: Untagged
@@ -18427,6 +18518,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1906655323}
   m_CullTransparentMesh: 1
+--- !u!114 &1906655329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1906655323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d4e2aae2a84c6099e4865d3f35b1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_01.Scripts.UI.UI_Score
 --- !u!1001 &1913180632
 PrefabInstance:
   m_ObjectHideFlags: 0

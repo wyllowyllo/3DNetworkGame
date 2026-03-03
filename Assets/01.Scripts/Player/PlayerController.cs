@@ -142,6 +142,9 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
         {
             // 아이템 생성
             ItemObjectFactory.Instance.RequestMakeScoreItem(transform.position);
+            
+            // 점수 갱신
+            ScoreManager.Instance.DiscountScore();
         }
         
        yield return new WaitForSeconds(_respawnDelay);

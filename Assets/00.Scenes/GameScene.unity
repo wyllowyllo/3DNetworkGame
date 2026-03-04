@@ -4638,7 +4638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100164a3d07d4f79a747f3c351a3c306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Scripts.Core.ScoreManager
-  _scorePerLevel: 1000
 --- !u!1 &487037179
 GameObject:
   m_ObjectHideFlags: 0

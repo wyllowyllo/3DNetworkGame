@@ -14,8 +14,10 @@ public enum EBearState
 }
 
 /// <summary>
-/// Bear 상태 공통 추상 기반. BearController 참조 및 공유 유틸(DetectPlayer, GetRandomPatrolPoint)을 제공한다.
-/// 기본 OnTakeDamage: HP 소모 → Death 또는 Hit 전환.
+/// Bear 상태 공통 추상 기반.
+/// BearController 참조와 GetRandomPatrolPoint 유틸을 제공한다.
+/// 플레이어 탐지는 BearController.DetectTarget() / .ClearTarget()을 사용한다.
+/// 데미지/상태 전환 결정은 BearController.TakeDamage가 전담하므로 OnTakeDamage는 없다.
 /// </summary>
 public abstract class BearStateBase : IMonsterState
 {
@@ -31,36 +33,6 @@ public abstract class BearStateBase : IMonsterState
     public abstract void Enter();
     public abstract void Update();
     public virtual  void Exit() { }
-
-    public virtual void OnTakeDamage(float damage, int attackerActorNumber)
-    {
-        BearController.Stat.Health.Consume(damage);
-
-        if (BearController.Stat.Health.Value <= 0f)
-            BearController.ChangeState(new BearDeathState(BearController));
-        else
-            BearController.ChangeState(new BearHitState(BearController));
-    }
-
-    protected void DetectPlayer()
-    {
-        Collider[] hits = Physics.OverlapSphere(
-            BearController.transform.position, BearController.Stat.DetectRange,
-            LayerMask.GetMask("Player"));
-
-        BearController.Target = null;
-        float minDist = float.MaxValue;
-
-        foreach (var col in hits)
-        {
-            float d = Vector3.Distance(BearController.transform.position, col.transform.position);
-            if (d < minDist)
-            {
-                minDist     = d;
-                BearController.Target = col.transform;
-            }
-        }
-    }
 
     protected Vector3 GetRandomPatrolPoint()
     {

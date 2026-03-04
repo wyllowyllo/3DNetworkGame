@@ -50,6 +50,8 @@ MonoBehaviour:
   - RPC_PlayHitAnimation
   - RPC_Respawn
   - RPC_SetWeaponScale
+  - PlayDeathAnimation
+  - PlayHitAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

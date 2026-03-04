@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class BearAttackState : BearStateBase
@@ -11,9 +12,9 @@ public class BearAttackState : BearStateBase
 
     public override void Enter()
     {
-        BearController.Agent.isStopped = true;
+        BearController.nav.isStopped = true;
         _timer = BearController.Stat.AttackCooldown;
-        BearController.SetAttackStance(true);
+        BearController.Animator.SetBool("IsAttacking", true);
     }
 
     public override void Update()
@@ -34,14 +35,20 @@ public class BearAttackState : BearStateBase
         if (_timer <= 0f)
         {
             _timer = BearController.Stat.AttackCooldown;
-            BearController.ApplyDamageToTarget();
+
+            PhotonView targetView = BearController.Target.GetComponent<PhotonView>();
+            if (targetView != null)
+                targetView.RPC("TakeDamage", Photon.Pun.RpcTarget.All,
+                    BearController.Stat.Damage.Value,
+                    BearController.photonView.Owner.ActorNumber);
+
             int index = AttackIndices[Random.Range(0, AttackIndices.Length)];
-            BearController.TriggerAttackAnim(index);
+            BearController.photonView.RPC(nameof(BearController.PlayAttackAnimation), RpcTarget.All, index);
         }
     }
 
     public override void Exit()
     {
-        BearController.SetAttackStance(false);
+        BearController.Animator.SetBool("IsAttacking", false);
     }
 }

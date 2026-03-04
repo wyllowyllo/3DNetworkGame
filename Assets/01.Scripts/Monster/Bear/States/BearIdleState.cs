@@ -10,8 +10,8 @@ public class BearIdleState : BearStateBase
 
     public override void Enter()
     {
-        BearController.Agent.isStopped = true;
-        BearController.Agent.ResetPath();
+        BearController.nav.isStopped = true;
+        BearController.nav.ResetPath();
         _idleTimer = Random.Range(2f, 5f);
     }
 
@@ -19,7 +19,6 @@ public class BearIdleState : BearStateBase
     {
         _idleTimer -= Time.deltaTime;
 
-        DetectPlayer();
         if (BearController.Target != null)
         {
             BearController.ChangeState(new BearApproachState(BearController));

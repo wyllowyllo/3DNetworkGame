@@ -4,37 +4,38 @@ using Photon.Realtime;
 using UnityEngine;
 
 /// <summary>
-/// BearMonster.cs를 대체하는 Context 클래스.
-/// FSM 초기화, 외부 이벤트 수신, 상태 전환 명령 실행만 담당한다.
-/// 게임 로직은 각 BearXxxState에 위임한다.
+/// Bear FSM Context.
+/// 상태 전환, 데미지 수신, 애니메이션 이벤트, 네트워크 동기화를 전담한다.
+/// 게임 로직(이동/판정)은 각 BearXxxState에 위임한다.
 /// </summary>
-public class BearController : MonsterContext, IPunObservable, IMonsterController
+public class BearController : MonsterController, IPunObservable
 {
     [SerializeField] private BearStat _stat;
     [SerializeField] private float    _respawnDelay = 8f;
 
-    public BearStat Stat => _stat;
+    public BearStat   Stat   => _stat;
+    public BearSensor Sensor { get; private set; }
+    public bool  IsDead    => _stat.Health.Value <= 0f;
+
+    public Transform Target => Sensor.Target;
 
     // 프록시 클라이언트 동기화 값
     private float _syncedHP;
     private int   _syncedState;
     private float _syncedSpeed;
 
-    // ─── IMonsterController ───────────────────────────────────────
-    public float CurrentHP => _stat.Health.Value;
-    public float MaxHP     => _stat.Health.MaxValue;
-    public bool  IsDead    => _stat.Health.Value <= 0f;
-
     // ─── 초기화 ───────────────────────────────────────────────────
 
     protected override void Awake()
     {
         base.Awake();
+        Sensor = GetComponent<BearSensor>();
     }
 
     private void Start()
     {
         BasePosition = transform.position;
+        Sensor.Initialize(_stat.DetectRange);
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -47,11 +48,10 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
 
     protected override void Update()
     {
-        base.Update(); // MasterClient이면 CurrentState.Update() 호출
-
         if (PhotonNetwork.IsMasterClient)
         {
-            float speed = (Agent != null && Agent.enabled) ? Agent.velocity.magnitude : 0f;
+            Sensor.Detect(); // 탐지 먼저, 그다음 상태 업데이트
+            float speed = (nav != null && nav.enabled) ? nav.velocity.magnitude : 0f;
             Animator.SetFloat("Speed", speed);
         }
         else
@@ -59,9 +59,12 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
             Animator.SetFloat("Speed", _syncedSpeed);
             Animator.SetBool("IsAttacking", _syncedState == (int)EBearState.Attack);
         }
+
+        base.Update(); // CurrentState.Update() — Detect() 이후 실행
     }
 
     // ─── IDamagable ───────────────────────────────────────────────
+    // 데미지 수신, HP 처리, 상태 전환을 한 곳에서 전담한다.
 
     [PunRPC]
     public void TakeDamage(float damage, int attackerActorNumber)
@@ -69,7 +72,12 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         if (!PhotonNetwork.IsMasterClient) return;
         if (IsDead) return;
 
-        RouteToState(damage, attackerActorNumber);
+        _stat.Health.Consume(damage);
+
+        if (IsDead)
+            ChangeState(new BearDeathState(this));
+        else
+            ChangeState(new BearHitState(this));
     }
 
     // ─── IPunObservable (30 Hz) ───────────────────────────────────
@@ -80,7 +88,7 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         {
             stream.SendNext(_stat.Health.Value);
             stream.SendNext(CurrentStateId);
-            float speed = (Agent != null && Agent.enabled) ? Agent.velocity.magnitude : 0f;
+            float speed = (nav != null && nav.enabled) ? nav.velocity.magnitude : 0f;
             stream.SendNext(speed);
         }
         else
@@ -105,7 +113,7 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         if (restoreState == EBearState.Death)
         {
             _stat.Health.Initialize();
-            Agent.enabled = true;
+            nav.enabled = true;
             photonView.RPC(nameof(RPC_Respawn), RpcTarget.All, BasePosition);
             restoreState = EBearState.Idle;
         }
@@ -115,36 +123,29 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
 
     private IMonsterState CreateState(EBearState state)
     {
-        switch (state)
+        return state switch
         {
-            case EBearState.Idle:       return new BearIdleState(this);
-            case EBearState.Patrol:     return new BearPatrolState(this);
-            case EBearState.Comeback:   return new BearComebackState(this);
-            case EBearState.Approach:   return new BearApproachState(this);
-            case EBearState.Attack:     return new BearAttackState(this);
-            case EBearState.Hit:        return new BearHitState(this);
-            case EBearState.Death:      return new BearDeathState(this);
-            default:                    return new BearIdleState(this);
-        }
+            EBearState.Idle     => new BearIdleState(this),
+            EBearState.Patrol   => new BearPatrolState(this),
+            EBearState.Comeback => new BearComebackState(this),
+            EBearState.Approach => new BearApproachState(this),
+            EBearState.Attack   => new BearAttackState(this),
+            EBearState.Hit      => new BearHitState(this),
+            EBearState.Death    => new BearDeathState(this),
+            _                   => new BearIdleState(this),
+        };
     }
 
-    // ─── RPC 래퍼 메서드 (상태 클래스에서 호출) ───────────────────
-
-    public void SetAttackStance(bool active)    => Animator.SetBool("IsAttacking", active);
-    public void TriggerAttackAnim(int index)    => photonView.RPC(nameof(RPC_PlayAttackAnimation), RpcTarget.All, index);
-    public void TriggerHitAnim()                => photonView.RPC(nameof(RPC_PlayHitAnimation), RpcTarget.All);
-    public void TriggerDeathAnim()              => photonView.RPC(nameof(RPC_PlayDeathAnimation), RpcTarget.All);
-
-    // ─── [PunRPC] 수신 메서드 (Animator 실제 호출) ────────────────
+    // ─── [PunRPC] 애니메이션 수신 메서드 ─────────────────────────
 
     [PunRPC]
-    private void RPC_PlayAttackAnimation(int index) => Animator.SetTrigger($"Attack{index}");
+    public void PlayAttackAnimation(int index) => Animator.SetTrigger($"Attack{index}");
 
     [PunRPC]
-    private void RPC_PlayHitAnimation() => Animator.SetTrigger("Hit");
+    public void PlayHitAnimation() => Animator.SetTrigger("Hit");
 
     [PunRPC]
-    private void RPC_PlayDeathAnimation() => Animator.SetTrigger("Death");
+    public void PlayDeathAnimation() => Animator.SetTrigger("Death");
 
     [PunRPC]
     private void RPC_Respawn(Vector3 position)
@@ -152,21 +153,6 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         transform.position = position;
         Animator.Rebind();
         Animator.Update(0f);
-    }
-
-    // ─── 공격 데미지 적용 (BearAttackState에서 호출) ─────────────
-
-    // TODO : 히트박스에서 공격 처리 담당하기
-    public void ApplyDamageToTarget()
-    {
-        if (Target == null) return;
-
-        PhotonView targetView = Target.GetComponent<PhotonView>();
-        if (targetView == null) return;
-
-        targetView.RPC("TakeDamage", RpcTarget.All,
-            _stat.Damage.Value,
-            photonView.Owner.ActorNumber);
     }
 
     // ─── 리스폰 코루틴 (BearDeathState에서 StartCoroutine으로 시작) ─
@@ -180,8 +166,8 @@ public class BearController : MonsterContext, IPunObservable, IMonsterController
         _stat.Health.Initialize();
         photonView.RPC(nameof(RPC_Respawn), RpcTarget.All, BasePosition);
 
-        Agent.enabled = true;
-        Agent.Warp(BasePosition);
+        nav.enabled = true;
+        nav.Warp(BasePosition);
 
         ChangeState(new BearIdleState(this));
     }

@@ -6,22 +6,20 @@ public class BearComebackState : BearStateBase
 
     public override void Enter()
     {
-        BearController.Target          = null;
-        BearController.Agent.isStopped = false;
-        BearController.Agent.speed     = BearController.Stat.MoveSpeed.Value;
-        BearController.Agent.SetDestination(BearController.BasePosition);
+        BearController.nav.isStopped = false;
+        BearController.nav.speed     = BearController.Stat.MoveSpeed.Value;
+        BearController.nav.SetDestination(BearController.BasePosition);
     }
 
     public override void Update()
     {
-        DetectPlayer();
         if (BearController.Target != null)
         {
             BearController.ChangeState(new BearApproachState(BearController));
             return;
         }
 
-        if (!BearController.Agent.pathPending && BearController.Agent.remainingDistance < 1f)
+        if (!BearController.nav.pathPending && BearController.nav.remainingDistance < 1f)
             BearController.ChangeState(new BearIdleState(BearController));
     }
 }

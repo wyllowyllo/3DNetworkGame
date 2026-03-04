@@ -8,8 +8,8 @@ public class BearApproachState : BearStateBase
 
     public override void Enter()
     {
-        BearController.Agent.isStopped = false;
-        BearController.Agent.speed     = BearController.Stat.RunSpeed.Value;
+        BearController.nav.isStopped = false;
+        BearController.nav.speed     = BearController.Stat.RunSpeed.Value;
     }
 
     public override void Update()
@@ -26,7 +26,7 @@ public class BearApproachState : BearStateBase
             return;
         }
 
-        BearController.Agent.SetDestination(BearController.Target.position);
+        BearController.nav.SetDestination(BearController.Target.position);
 
         if (Vector3.Distance(BearController.transform.position, BearController.Target.position) <= BearController.Stat.AttackRange)
             BearController.ChangeState(new BearAttackState(BearController));

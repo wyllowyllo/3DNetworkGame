@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class BearHitState : BearStateBase
@@ -11,9 +12,9 @@ public class BearHitState : BearStateBase
 
     public override void Enter()
     {
-        BearController.Agent.isStopped = true;
+        BearController.nav.isStopped = true;
         _hitRecoveryTimer    = HIT_RECOVERY_TIME;
-        BearController.TriggerHitAnim();
+        BearController.photonView.RPC(nameof(BearController.PlayHitAnimation), RpcTarget.All);
     }
 
     public override void Update()

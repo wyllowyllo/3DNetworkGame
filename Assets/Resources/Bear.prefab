@@ -1925,6 +1925,7 @@ GameObject:
   - component: {fileID: 7378390720779990991}
   - component: {fileID: -1592147292471496012}
   - component: {fileID: 3038797565718416129}
+  - component: {fileID: 5901316450879010212}
   m_Layer: 0
   m_Name: Bear
   m_TagString: Untagged
@@ -2084,6 +2085,18 @@ CapsuleCollider:
   m_Height: 3.1
   m_Direction: 2
   m_Center: {x: 0, y: 0.66, z: 0}
+--- !u!114 &5901316450879010212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58f43fb1be9c68749be88c17c8e52fba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BearSensor
 --- !u!1 &8002475675295336084
 GameObject:
   m_ObjectHideFlags: 0

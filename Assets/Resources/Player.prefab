@@ -2993,6 +2993,7 @@ GameObject:
   - component: {fileID: 4295767472553396920}
   - component: {fileID: 7349917457847723582}
   - component: {fileID: 5451768899863884820}
+  - component: {fileID: 4852348528674082994}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3234,6 +3235,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponAbility
   _collider: {fileID: 4653216254758185995}
+--- !u!114 &4852348528674082994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905808016514833383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf44f7dadb9b6e448c2c135fe1f88af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponScaleAbility
+  _weaponTransform: {fileID: 5911392302469800554}
+  _scorePerLevel: 10
 --- !u!1 &7019631981668753632
 GameObject:
   m_ObjectHideFlags: 0

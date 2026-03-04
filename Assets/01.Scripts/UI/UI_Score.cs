@@ -8,11 +8,12 @@ public class UI_Score : MonoBehaviour
 {
     private List<UI_ScoreItem> _items;
 
+    private const int DisplayCount = 3;
     private void Start()
     {
         _items = GetComponentsInChildren<UI_ScoreItem>().ToList();
         
-        ScoreManager.OnDataChanged += Refresh;
+        ScoreManager.OnDataChanged += (_, _) => Refresh();
         Refresh();
     }
 
@@ -25,11 +26,10 @@ public class UI_Score : MonoBehaviour
 
         foreach (var scoreData in scores)
         {
-            List<ScoreData> scoresDatas = scores.Values.ToList();
+            List<ScoreData> scoresDatas = scores.Values.OrderByDescending(x => x.Score).ToList();
+                                                       
             
-            // 1. TODO : 1등부터 3등까지 정렬
-            // 2.  TODO : 3명 있는지 적절하게 반복문
-            for (int i = 0; i < scoresDatas.Count; i++)
+            for (int i = 0; i < Mathf.Min(DisplayCount, scoresDatas.Count); i++)
             {
                 ScoreData data = scoresDatas[i];
                 _items[i].Set(data.NickName, data.Score);

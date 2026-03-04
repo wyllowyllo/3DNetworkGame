@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ExitGames.Client.Photon;
@@ -9,32 +9,37 @@ using UnityEngine;
 public class ScoreManager : MonoBehaviourPunCallbacks
 {
     public static ScoreManager Instance { get; private set; }
-    
+
     private int _score;
     private Dictionary<int, ScoreData> _scores = new();
 
     public ReadOnlyDictionary<int, ScoreData> Scores => new ReadOnlyDictionary<int, ScoreData>(_scores);
-    
-    public static event Action OnDataChanged;
+
+    public static event Action<int, int> OnDataChanged; // actorNumber, score
 
     private void Awake()
     {
         Instance = this;
     }
     
+    public override void OnJoinedRoom()
+    {
+        // 방에 들어가면 '내 점수가 0이다' 라는 내용으로 
+        // 커스텀 프로퍼티를 초기화해준다.
+        Refresh();
+    }
+
     public void AddScore(int score)
     {
-       
         _score += score;
-        
-       Refresh();
+        Refresh();
     }
 
     public void DiscountScore()
     {
-        if(_score > 0)
+        if (_score > 0)
             _score /= 2;
-        
+
         Refresh();
     }
 
@@ -42,26 +47,23 @@ public class ScoreManager : MonoBehaviourPunCallbacks
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
         if (!changedProps.ContainsKey("score")) return;
-        
+
         ScoreData scoreData = new ScoreData()
         {
             NickName = targetPlayer.NickName,
             Score = (int)changedProps["score"]
         };
-        
+
         _scores[targetPlayer.ActorNumber] = scoreData;
 
-        OnDataChanged?.Invoke();
+        OnDataChanged?.Invoke(targetPlayer.ActorNumber, scoreData.Score);
     }
-    
+
     private void Refresh()
     {
-        // 해시테이블은 딕셔너리와 같은 키 - 값 형태로 저장하는데
-        // 키 - 값에 있어서 자료형이 object다 (즉 모든 값을 저장할 수 있다)
         Hashtable hashtable = new Hashtable();
         hashtable.Add("score", _score);
-        
-        // 프로퍼티 등록
+
         PhotonNetwork.LocalPlayer.SetCustomProperties(hashtable);
     }
 }

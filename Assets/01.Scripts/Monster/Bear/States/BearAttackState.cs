@@ -4,8 +4,7 @@ using UnityEngine;
 public class BearAttackState : BearStateBase
 {
     public override int StateId => (int)EBearState.Attack;
-
-    private static readonly int[] AttackIndices = { 1, 2, 3, 5 };
+    
     private float _timer;
 
     public BearAttackState(BearController bearController) : base(bearController) { }
@@ -14,7 +13,6 @@ public class BearAttackState : BearStateBase
     {
         BearController.nav.isStopped = true;
         _timer = BearController.Stat.AttackCooldown;
-        BearController.Animator.SetBool("IsAttacking", true);
     }
 
     public override void Update()
@@ -41,9 +39,8 @@ public class BearAttackState : BearStateBase
                 targetView.RPC("TakeDamage", Photon.Pun.RpcTarget.All,
                     BearController.Stat.Damage.Value,
                     BearController.photonView.Owner.ActorNumber);
-
-            int index = AttackIndices[Random.Range(0, AttackIndices.Length)];
-            BearController.photonView.RPC(nameof(BearController.PlayAttackAnimation), RpcTarget.All, index);
+            
+            BearController.photonView.RPC(nameof(BearController.PlayAttackAnimation), RpcTarget.All);
         }
     }
 

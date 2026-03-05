@@ -12,6 +12,7 @@ public class BearHitState : BearStateBase
 
     public override void Enter()
     {
+        Debug.Log("Entering BearHitState");
         BearController.nav.isStopped = true;
         _hitRecoveryTimer    = HIT_RECOVERY_TIME;
         BearController.photonView.RPC(nameof(BearController.PlayHitAnimation), RpcTarget.All);

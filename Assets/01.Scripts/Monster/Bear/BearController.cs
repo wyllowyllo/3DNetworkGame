@@ -139,7 +139,7 @@ public class BearController : MonsterController, IPunObservable
     // ─── [PunRPC] 애니메이션 수신 메서드 ─────────────────────────
 
     [PunRPC]
-    public void PlayAttackAnimation(int index) => Animator.SetTrigger($"Attack{index}");
+    public void PlayAttackAnimation() => Animator.SetTrigger("Attack");
 
     [PunRPC]
     public void PlayHitAnimation() => Animator.SetTrigger("Hit");

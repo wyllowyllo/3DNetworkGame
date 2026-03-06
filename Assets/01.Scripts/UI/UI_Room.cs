@@ -43,7 +43,7 @@ public class UI_Room : MonoBehaviourPunCallbacks
         for (int i = 0; i < roomCount; i++)
         {
             // 방 개수만큼만 UI를 활성화한다. 
-            _roomItems[i].Init(roomList[i]);
+            _roomItems[i].Init(rooms[i]);
             _roomItems[i].gameObject.SetActive(true);
         }
         

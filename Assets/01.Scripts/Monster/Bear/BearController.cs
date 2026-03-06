@@ -57,7 +57,6 @@ public class BearController : MonsterController, IPunObservable
         else
         {
             Animator.SetFloat("Speed", _syncedSpeed);
-            Animator.SetBool("IsAttacking", _syncedState == (int)EBearState.Attack);
         }
 
         base.Update(); // CurrentState.Update() — Detect() 이후 실행

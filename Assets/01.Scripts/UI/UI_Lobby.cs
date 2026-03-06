@@ -48,9 +48,13 @@ public class UI_Lobby : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = 20; // 룸 최대 접속자 수
         roomOptions.IsVisible = true; // 로비에서 룸을 보여줄 것인지
         roomOptions.IsOpen = true;
+        roomOptions.CustomRoomProperties = new Hashtable { { "ownerName", nickname } };
+        roomOptions.CustomRoomPropertiesForLobby = new string[] { "ownerName" };
       
         // 룸 만들기
-        PhotonNetwork.CreateRoom("test", roomOptions);
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
+        
+       
     }
     
     private void OnClickCharacterButton(ECharacterType characterType)

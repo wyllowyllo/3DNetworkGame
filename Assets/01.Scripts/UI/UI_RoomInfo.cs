@@ -31,8 +31,13 @@ public class UI_RoomInfo : MonoBehaviour
         _playerCountTextUI.text = $"{room.PlayerCount} / {room.MaxPlayers}";
     }
 
+    private void OnDestroy()
+    {
+        PhotonRoomManager.Instance.OnDataChanged -= Refresh;
+    }
+
     private void ExitRoom()
     {
-        
+
     }
 }

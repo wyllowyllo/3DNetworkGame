@@ -16,6 +16,13 @@ public class UI_RoomLog : MonoBehaviour
       PhotonRoomManager.Instance.OnPlayerDeathed +=  PlayerDeathLog;
    }
 
+   private void OnDestroy()
+   {
+      PhotonRoomManager.Instance.OnPlayerEnter -= OnPlayerEnter;
+      PhotonRoomManager.Instance.OnPlayerLeave -= OnPlayerLeave;
+      PhotonRoomManager.Instance.OnPlayerDeathed -= PlayerDeathLog;
+   }
+
    private void OnPlayerEnter(Player newPlayer)
    {
       _logText.text += "\n" + $"{newPlayer.NickName}님이 입장하였습니다.";

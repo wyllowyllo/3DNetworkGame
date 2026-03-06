@@ -32,7 +32,12 @@ public class SpawnManager : MonoBehaviour
     public void SpawnPlayer()
     {
         Vector3 spawnPoint = GetRandomSpawnPosition();
-        PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity);
+        
+        var charType = PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("characterType")
+            ? (ECharacterType)(int)PhotonNetwork.LocalPlayer.CustomProperties["characterType"]
+            : ECharacterType.Male;
+
+        PhotonNetwork.Instantiate($"Player{charType}", spawnPoint, Quaternion.identity);
     }
 
     

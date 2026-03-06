@@ -61,8 +61,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
       Debug.Log("로비 접속 완료!");
       Debug.Log(PhotonNetwork.InLobby);
       
-      // 랜덤 방 입장 시도
-      PhotonNetwork.JoinRandomRoom();
+      
    }
    
   
@@ -74,14 +73,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
       
       Debug.Log($"방 입장에 실패했습니다 : {returnCode}, {message}");
       
-      // 룸 옵션 정의
-      RoomOptions roomOptions = new RoomOptions();
-      roomOptions.MaxPlayers = 20; // 룸 최대 접속자 수
-      roomOptions.IsVisible = true; // 로비에서 룸을 보여줄 것인지
-      roomOptions.IsOpen = true;
-      
-      // 룸 만들기
-      PhotonNetwork.CreateRoom("test", roomOptions);
+    
    }
    
    

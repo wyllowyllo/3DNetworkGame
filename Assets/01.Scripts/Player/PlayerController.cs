@@ -13,8 +13,6 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamagable
     [SerializeField] private PlayerStat _playerStat;
     [SerializeField] private float _respawnDelay = 5f;
 
-   
-    
     // 이벤트
     public UnityEvent OnHealthChanged  = new UnityEvent();
     public UnityEvent OnStaminaChanged = new UnityEvent();
